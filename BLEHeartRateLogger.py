@@ -197,7 +197,7 @@ def main(addr=None, sqlfile=None, gatttool="gatttool", check_battery=False, hr_h
 
         while 1:
             log.info("Establishing connection to " + addr)
-            gt = pexpect.spawn(gatttool + " -b " + addr + " -t random --interactive")
+            gt = pexpect.spawn(gatttool + " -b " + addr + " --interactive")
             if debug_gatttool:
                 gt.logfile = sys.stdout
 
