@@ -40,6 +40,7 @@ def parse_args():
     parser.add_argument("-g", metavar='PATH', type=str, help="gatttool path (default: system available)", default="gatttool")
     parser.add_argument("-o", metavar='FILE', type=str, help="Output filename of the database (default: none)")
     parser.add_argument("-H", metavar='HR_HANDLE', type=str, help="Gatttool handle used for HR notifications (default: none)")
+    parser.add_argument("-C", metavar='HR_CTL_HANDLE', type=str, help="Gatttool handle used to request HR notifications (default: none)")
     parser.add_argument("-v", action='store_true', help="Verbose output")
     parser.add_argument("-d", action='store_true', help="Enable debug of gatttool")
 
@@ -172,7 +173,7 @@ def get_ble_hr_mac():
     return addr
 
 
-def main(addr=None, sqlfile=None, gatttool="gatttool", check_battery=False, hr_handle=None, debug_gatttool=False):
+def main(addr=None, sqlfile=None, gatttool="gatttool", check_battery=False, hr_handle=None, hr_ctl_handle=None, debug_gatttool=False):
     """
     main routine to which orchestrates everything
     """
@@ -191,7 +192,6 @@ def main(addr=None, sqlfile=None, gatttool="gatttool", check_battery=False, hr_h
             sq.close()
             return
 
-    hr_ctl_handle = None
     retry = True
     while retry:
 
