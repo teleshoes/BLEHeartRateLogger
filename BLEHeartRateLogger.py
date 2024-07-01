@@ -41,6 +41,7 @@ def parse_args():
     parser.add_argument("-o", metavar='FILE', type=str, help="Output filename of the database (default: none)")
     parser.add_argument("-H", metavar='HR_HANDLE', type=str, help="Gatttool handle used for HR notifications (default: none)")
     parser.add_argument("-C", metavar='HR_CTL_HANDLE', type=str, help="Gatttool handle used to request HR notifications (default: none)")
+    parser.add_argument("-t", metavar='BLE_ADDR_TYPE', type=str, help="Gatttool '-t' option, either 'public' or 'random' (default: random)", default="random")
     parser.add_argument("-v", action='store_true', help="Verbose output")
     parser.add_argument("-d", action='store_true', help="Enable debug of gatttool")
 
@@ -173,7 +174,7 @@ def get_ble_hr_mac():
     return addr
 
 
-def main(addr=None, sqlfile=None, gatttool="gatttool", check_battery=False, hr_handle=None, hr_ctl_handle=None, debug_gatttool=False):
+def main(addr=None, sqlfile=None, gatttool="gatttool", check_battery=False, hr_handle=None, hr_ctl_handle=None, ble_addr_type="random", debug_gatttool=False):
     """
     main routine to which orchestrates everything
     """
@@ -197,7 +198,7 @@ def main(addr=None, sqlfile=None, gatttool="gatttool", check_battery=False, hr_h
 
         while 1:
             log.info("Establishing connection to " + addr)
-            gt = pexpect.spawn(gatttool + " -b " + addr + " --interactive")
+            gt = pexpect.spawn(gatttool + " -t " + ble_addr_type + " -b " + addr + " --interactive")
             if debug_gatttool:
                 gt.logfile = sys.stdout
 
@@ -340,7 +341,7 @@ def cli():
     else:
         log.setLevel(logging.INFO)
 
-    main(args.m, args.o, args.g, args.b, args.H, args.d)
+    main(args.m, args.o, args.g, args.b, args.H, args.C, args.t, args.d)
 
 
 if __name__ == "__main__":
